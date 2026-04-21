@@ -1,1 +1,2087 @@
-# blog
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>냉장고를 부탁해</title>
+  <style>
+    :root{
+      --bg:#f5f1ea;
+      --paper:#fffdf9;
+      --paper-2:#fcf8f2;
+      --ink:#201a17;
+      --sub:#74675d;
+      --line:#1f1a17;
+      --accent:#d96c3f;
+      --accent-2:#f0c36d;
+      --green:#7c9a6d;
+      --green-soft:#eef6ea;
+      --red-soft:#fff1ec;
+      --yellow-soft:#fff8e8;
+      --blue-soft:#eef5ff;
+      --shadow:0 8px 0 #201a17;
+      --radius-xl:28px;
+      --radius-lg:22px;
+      --radius-md:18px;
+      --radius-sm:14px;
+      --ease:cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    *{margin:0;padding:0;box-sizing:border-box;}
+
+    body{
+      font-family:"Pretendard",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+      background:var(--bg);
+      color:var(--ink);
+      min-height:100vh;
+      padding:18px;
+    }
+
+    .app{
+      max-width:1480px;
+      margin:0 auto;
+      animation:fadeUp .7s var(--ease);
+    }
+
+    @keyframes fadeUp{
+      from{opacity:0;transform:translateY(10px);}
+      to{opacity:1;transform:translateY(0);}
+    }
+
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:16px;
+      margin-bottom:18px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:14px;
+    }
+
+    .brand-icon{
+      width:56px;height:56px;
+      border:2.5px solid var(--line);
+      border-radius:18px;
+      background:#fff;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:25px;
+      box-shadow:4px 4px 0 #201a17;
+    }
+
+    .brand-copy h1{
+      font-size:28px;
+      font-weight:900;
+      letter-spacing:-0.04em;
+      line-height:1.05;
+    }
+
+    .brand-copy p{
+      font-size:14px;
+      color:var(--sub);
+      font-weight:600;
+      margin-top:4px;
+    }
+
+    .top-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .chip-btn{
+      border:2px solid var(--line);
+      background:#fff;
+      border-radius:999px;
+      padding:10px 14px;
+      font-size:13px;
+      font-weight:900;
+      cursor:pointer;
+      box-shadow:3px 3px 0 #201a17;
+      transition:.16s var(--ease);
+    }
+
+    .chip-btn:hover{transform:translate(-2px,-2px);}
+    .chip-btn.primary{background:var(--accent);color:#fff;}
+
+    .panel{
+      border:2.5px solid var(--line);
+      border-radius:var(--radius-xl);
+      background:var(--paper);
+      box-shadow:var(--shadow);
+    }
+
+    .hero-single{
+      display:grid;
+      gap:18px;
+      margin-bottom:20px;
+    }
+
+    .hero-focus{
+      overflow:hidden;
+      padding:0;
+    }
+
+    .hero-focus-top{
+      padding:16px 16px 0 16px;
+    }
+
+    .hero-badge{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border:2px solid var(--line);
+      background:#fff;
+      border-radius:999px;
+      padding:10px 14px;
+      font-size:12px;
+      font-weight:900;
+    }
+
+    .hero-visual{
+      height:150px;
+      border-bottom:2.5px solid var(--line);
+      background:
+        radial-gradient(circle at 20% 20%, rgba(255,255,255,.45), transparent 16%),
+        linear-gradient(135deg, #f0c36d 0%, #ef8a62 42%, #7c9a6d 100%);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:68px;
+      line-height:1;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .hero-visual::before{
+      content:"";
+      position:absolute;
+      inset:-30% -20%;
+      background:linear-gradient(115deg,transparent 35%,rgba(255,255,255,.18) 50%,transparent 64%);
+      transform:translateX(-120%);
+      animation:shimmer 5s linear infinite;
+    }
+
+    @keyframes shimmer{
+      to{transform:translateX(120%);}
+    }
+
+    .hero-focus-body{
+      padding:18px 18px 20px 18px;
+    }
+
+    .hero-focus-body h2{
+      font-size:26px;
+      font-weight:900;
+      letter-spacing:-0.04em;
+      margin-bottom:10px;
+    }
+
+    .hero-focus-body p{
+      color:var(--sub);
+      font-size:15px;
+      line-height:1.65;
+      font-weight:500;
+    }
+
+    .hero-stats{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:12px;
+    }
+
+    .mini-card{
+      border:2.5px solid var(--line);
+      background:#fff;
+      border-radius:20px;
+      padding:16px;
+      box-shadow:4px 4px 0 #201a17;
+    }
+
+    .mini-card strong{
+      display:block;
+      font-size:18px;
+      font-weight:900;
+      margin-bottom:4px;
+    }
+
+    .mini-card span{
+      font-size:12px;
+      color:var(--sub);
+      font-weight:700;
+    }
+
+    .layout{
+      display:grid;
+      grid-template-columns:340px 1fr;
+      gap:18px;
+      align-items:start;
+    }
+
+    .sidebar,.content-panel{
+      padding:20px;
+      position:relative;
+    }
+
+    .sidebar{position:sticky;top:18px;}
+
+    .section-title{
+      font-size:22px;
+      font-weight:900;
+      letter-spacing:-.03em;
+      margin-bottom:6px;
+    }
+
+    .section-sub{
+      color:var(--sub);
+      line-height:1.6;
+      font-size:14px;
+      font-weight:500;
+      margin-bottom:16px;
+    }
+
+    .search-row{
+      display:flex;
+      gap:10px;
+      margin-bottom:22px;
+    }
+
+    .input-wrap{flex:1;position:relative;}
+
+    .search-input{
+      width:100%;
+      height:56px;
+      border:2.5px solid var(--line);
+      border-radius:18px;
+      background:#fff;
+      padding:0 16px 0 46px;
+      font-size:15px;
+      font-weight:700;
+      outline:none;
+    }
+
+    .search-icon{
+      position:absolute;
+      left:16px;
+      top:50%;
+      transform:translateY(-50%);
+      width:18px;height:18px;
+      color:var(--sub);
+    }
+
+    .btn{
+      border:2.5px solid var(--line);
+      border-radius:18px;
+      background:#fff;
+      padding:0 16px;
+      min-height:52px;
+      font-size:14px;
+      font-weight:900;
+      cursor:pointer;
+      box-shadow:4px 4px 0 #201a17;
+      transition:.15s var(--ease);
+    }
+
+    .btn:hover{transform:translate(-2px,-2px);}
+    .btn.primary{background:var(--accent);color:#fff;}
+    .btn.green{background:var(--green);color:#fff;}
+    .btn.soft{background:var(--yellow-soft);}
+    .btn.block{width:100%;}
+
+    .block{margin-top:24px;}
+
+    .block-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:12px;
+    }
+
+    .block-head h3{font-size:16px;font-weight:900;}
+    .block-head span{font-size:12px;color:var(--sub);font-weight:700;}
+
+    .category-tabs{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+    }
+
+    .category-btn{
+      border:2px solid var(--line);
+      background:#fff;
+      border-radius:999px;
+      padding:10px 14px;
+      font-size:13px;
+      font-weight:800;
+      cursor:pointer;
+    }
+
+    .category-btn.active{
+      background:var(--ink);
+      color:#fff;
+      box-shadow:3px 3px 0 #201a17;
+    }
+
+    .selected-ingredients{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+    }
+
+    .ingredient-tag{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 12px;
+      border:2px solid var(--line);
+      border-radius:999px;
+      background:#fff;
+      font-size:14px;
+      font-weight:800;
+    }
+
+    .remove-btn,.tiny-btn{
+      width:22px;height:22px;
+      border:2px solid var(--line);
+      border-radius:999px;
+      background:#f5e3d7;
+      font-size:13px;
+      font-weight:900;
+      cursor:pointer;
+      line-height:1;
+    }
+
+    .empty-note{
+      padding:14px;
+      background:var(--paper-2);
+      border:2px dashed #cdbca8;
+      border-radius:16px;
+      color:var(--sub);
+      font-size:14px;
+      line-height:1.6;
+      font-weight:600;
+    }
+
+    .tabs-bar{
+      display:flex;
+      gap:10px;
+      margin-bottom:16px;
+      border-bottom:2px solid #dacdbf;
+      padding-bottom:16px;
+      overflow-x:auto;
+      overflow-y:hidden;
+      -webkit-overflow-scrolling:touch;
+      scroll-snap-type:x proximity;
+    }
+
+    .tab-btn{
+      flex:0 0 auto;
+      border:2px solid var(--line);
+      background:#fff;
+      border-radius:999px;
+      padding:11px 16px;
+      font-size:13px;
+      font-weight:900;
+      cursor:pointer;
+      min-height:48px;
+      white-space:nowrap;
+      scroll-snap-align:start;
+    }
+
+    .tab-btn.active{
+      background:var(--ink);
+      color:#fff;
+      box-shadow:3px 3px 0 #201a17;
+    }
+
+    .tab-panel{
+      display:none;
+      animation:panelFade .22s var(--ease);
+    }
+
+    .tab-panel.active{display:block;}
+    .tab-panel[hidden]{display:none !important;}
+
+    @keyframes panelFade{
+      from{opacity:0;transform:translateY(8px);}
+      to{opacity:1;transform:translateY(0);}
+    }
+
+    .results-top{
+      display:grid;
+      grid-template-columns:1.1fr .9fr;
+      gap:14px;
+      margin-bottom:18px;
+    }
+
+    .results-intro,.results-tools,.section-box{
+      border:2.5px solid var(--line);
+      border-radius:22px;
+      background:#fff;
+      padding:18px;
+    }
+
+    .results-intro h2,.section-box h2{
+      font-size:28px;
+      font-weight:900;
+      letter-spacing:-.04em;
+      margin-bottom:8px;
+    }
+
+    .results-intro p,.results-tools p,.section-box p{
+      color:var(--sub);
+      font-size:14px;
+      line-height:1.6;
+      font-weight:500;
+    }
+
+    .tools-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:12px;
+    }
+
+    .recipe-grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:18px;
+    }
+
+    .recipe-card{
+      border:2.5px solid var(--line);
+      border-radius:26px;
+      background:#fff;
+      overflow:hidden;
+      box-shadow:5px 5px 0 #201a17;
+      transition:.2s var(--ease);
+    }
+
+    .recipe-card:hover{
+      transform:translate(-3px,-3px);
+      box-shadow:8px 8px 0 #201a17;
+    }
+
+    .recipe-thumb{
+      height:170px;
+      border-bottom:2.5px solid var(--line);
+      position:relative;
+      overflow:hidden;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(255,255,255,.35), transparent 16%),
+        linear-gradient(135deg, #f0c36d 0%, #ef8a62 42%, #7c9a6d 100%);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .recipe-emoji{
+      font-size:72px;
+      line-height:1;
+      filter:drop-shadow(0 8px 14px rgba(0,0,0,.16));
+      transform:translateY(6px);
+      user-select:none;
+    }
+
+    .recipe-badges{
+      position:absolute;
+      left:14px;right:14px;top:14px;
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+    }
+
+    .badge,.meta-pill,.material-item,.missing-item,.summary-chip,.mini-btn{
+      background:#fff;
+      border:2px solid var(--line);
+      border-radius:999px;
+    }
+
+    .badge{
+      padding:8px 10px;
+      font-size:12px;
+      font-weight:900;
+    }
+
+    .recipe-body{padding:18px;}
+
+    .recipe-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:12px;
+      margin-bottom:10px;
+    }
+
+    .recipe-name{
+      font-size:21px;
+      font-weight:900;
+      letter-spacing:-.03em;
+      line-height:1.2;
+    }
+
+    .recipe-time{
+      background:var(--yellow-soft);
+      border:2px solid var(--line);
+      border-radius:999px;
+      padding:8px 10px;
+      font-size:12px;
+      font-weight:900;
+      white-space:nowrap;
+    }
+
+    .recipe-desc{
+      color:var(--sub);
+      font-size:14px;
+      line-height:1.6;
+      font-weight:500;
+      margin-bottom:14px;
+    }
+
+    .meta-row,.material-list,.missing-list,.card-actions,.favorite-grid,.shopping-grid{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+
+    .meta-pill,.material-item,.missing-item{
+      padding:8px 10px;
+      font-size:12px;
+      font-weight:800;
+    }
+
+    .material-item{
+      background:#faf5ee;
+      border-color:#d7cabd;
+      color:#6a5648;
+    }
+
+    .material-item.available{
+      background:var(--green-soft);
+      border-color:#b8d2ab;
+      color:#48603f;
+    }
+
+    .materials-title,.missing-title{
+      font-size:13px;
+      font-weight:900;
+      margin-bottom:10px;
+    }
+
+    .missing-box{
+      margin-top:14px;
+      border:2px solid #e8cfc4;
+      background:var(--red-soft);
+      border-radius:18px;
+      padding:14px;
+    }
+
+    .missing-box.complete{
+      background:var(--green-soft);
+      border-color:#b8d2ab;
+    }
+
+    .card-actions{margin-top:14px;}
+
+    .mini-btn{
+      padding:10px 12px;
+      font-size:12px;
+      font-weight:900;
+      cursor:pointer;
+    }
+
+    .mini-btn.filled{
+      background:var(--accent);
+      color:#fff;
+    }
+
+    .favorite-card,.shopping-card{
+      width:100%;
+      border:2.5px solid var(--line);
+      background:#fff;
+      border-radius:18px;
+      padding:14px;
+      box-shadow:4px 4px 0 #201a17;
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      align-items:center;
+    }
+
+    .favorite-card-info strong,.shopping-card-info strong{
+      display:block;
+      font-size:15px;
+      font-weight:900;
+      margin-bottom:4px;
+    }
+
+    .favorite-card-info span,.shopping-card-info span{
+      font-size:13px;
+      color:var(--sub);
+      font-weight:600;
+    }
+
+    .shopping-card.done{
+      opacity:.72;
+      background:#f4f8f0;
+    }
+
+    .shopping-card.done .shopping-card-info strong{
+      text-decoration:line-through;
+    }
+
+    .shopping-left{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      flex:1;
+    }
+
+    .check{
+      width:20px;height:20px;
+      border:2px solid var(--line);
+      border-radius:6px;
+      background:#fff;
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:12px;
+      font-weight:900;
+    }
+
+    .planner-grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:12px;
+      margin-top:14px;
+    }
+
+    .planner-day{
+      border:2.5px solid var(--line);
+      border-radius:18px;
+      background:#fff;
+      padding:14px;
+      box-shadow:4px 4px 0 #201a17;
+    }
+
+    .planner-day-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:8px;
+    }
+
+    .planner-day-name{
+      font-size:14px;
+      font-weight:900;
+    }
+
+    .planner-slot{
+      min-height:48px;
+      border:2px dashed #ccbba8;
+      border-radius:12px;
+      padding:10px;
+      display:flex;
+      align-items:center;
+      font-size:13px;
+      color:var(--sub);
+      font-weight:700;
+      background:#fcf8f3;
+    }
+
+    .planner-slot.filled{
+      background:var(--blue-soft);
+      color:#22384f;
+      border-style:solid;
+    }
+
+    .planner-helper{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:14px;
+    }
+
+    .modal-overlay,.picker-overlay,.day-overlay{
+      position:fixed;
+      inset:0;
+      background:rgba(20,14,12,.48);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index:1000;
+      padding:20px;
+    }
+
+    .modal-overlay.active,.picker-overlay.active,.day-overlay.active{
+      display:flex;
+    }
+
+    .modal,.picker-modal,.day-modal{
+      width:min(980px,100%);
+      max-height:90vh;
+      overflow:auto;
+      border:3px solid var(--line);
+      border-radius:28px;
+      background:var(--paper);
+      box-shadow:0 18px 50px rgba(0,0,0,.2);
+      animation:modalUp .25s var(--ease);
+    }
+
+    @keyframes modalUp{
+      from{opacity:0;transform:translateY(14px) scale(.98);}
+      to{opacity:1;transform:translateY(0) scale(1);}
+    }
+
+    .modal-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      padding:18px 20px;
+      border-bottom:2.5px solid var(--line);
+      position:sticky;
+      top:0;
+      background:var(--paper);
+      z-index:5;
+    }
+
+    .modal-head h3{
+      font-size:24px;
+      font-weight:900;
+      letter-spacing:-.03em;
+    }
+
+    .close-btn{
+      border:2px solid var(--line);
+      background:#fff;
+      border-radius:999px;
+      width:40px;height:40px;
+      font-weight:900;
+      font-size:16px;
+      cursor:pointer;
+    }
+
+    .modal-body{
+      padding:20px;
+      display:grid;
+      grid-template-columns:1.05fr .95fr;
+      gap:18px;
+    }
+
+    .detail-hero{
+      border:2.5px solid var(--line);
+      border-radius:24px;
+      overflow:hidden;
+      background:#fff;
+    }
+
+    .detail-visual{
+      height:220px;
+      border-bottom:2.5px solid var(--line);
+      background:
+        radial-gradient(circle at 20% 20%, rgba(255,255,255,.35), transparent 16%),
+        linear-gradient(135deg, #f0c36d 0%, #ef8a62 42%, #7c9a6d 100%);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .detail-emoji{
+      font-size:96px;
+      line-height:1;
+      filter:drop-shadow(0 10px 18px rgba(0,0,0,.18));
+      user-select:none;
+    }
+
+    .detail-copy{padding:18px;}
+    .detail-copy p{
+      font-size:14px;
+      color:var(--sub);
+      line-height:1.7;
+      font-weight:500;
+    }
+
+    .detail-box{
+      border:2.5px solid var(--line);
+      border-radius:22px;
+      background:#fff;
+      padding:16px;
+      margin-bottom:14px;
+    }
+
+    .detail-box h4{
+      font-size:15px;
+      font-weight:900;
+      margin-bottom:10px;
+    }
+
+    .step-list{display:grid;gap:10px;}
+
+    .step{
+      border:2px solid var(--line);
+      border-radius:16px;
+      background:#fffaf2;
+      padding:12px;
+      font-size:14px;
+      line-height:1.7;
+      font-weight:700;
+    }
+
+    .step b{margin-right:8px;}
+
+    .picker-body{
+      padding:24px;
+      overflow:visible;
+    }
+
+    .picker-sub{
+      color:var(--sub);
+      font-size:14px;
+      line-height:1.6;
+      margin-bottom:18px;
+      font-weight:500;
+    }
+
+    .picker-result{
+      text-align:center;
+      font-size:18px;
+      font-weight:900;
+      margin-bottom:14px;
+      min-height:26px;
+    }
+
+    .shuffle-stage{
+      position:relative;
+      min-height:380px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      margin-bottom:20px;
+      overflow:visible;
+    }
+
+    .shuffle-stack{
+      position:relative;
+      width:min(100%, 460px);
+      height:320px;
+      overflow:visible;
+      padding:18px;
+    }
+
+    .stack-card{
+      position:absolute;
+      left:18px;
+      right:18px;
+      top:0;
+      bottom:0;
+      border:2.5px solid var(--line);
+      border-radius:28px;
+      background:#fff;
+      overflow:hidden;
+      box-shadow:6px 6px 0 #201a17;
+      will-change:transform, opacity;
+      backface-visibility:hidden;
+      transform-origin:center center;
+      transition:
+        transform .58s cubic-bezier(0.22, 1, 0.36, 1),
+        opacity .58s cubic-bezier(0.22, 1, 0.36, 1),
+        filter .58s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .stack-card.back-1{
+      transform:translate(18px, 16px) scale(.95) rotate(2deg);
+      opacity:.72;
+      filter:saturate(.92);
+      z-index:2;
+    }
+
+    .stack-card.back-2{
+      transform:translate(-14px, 20px) scale(.91) rotate(-3deg);
+      opacity:.5;
+      filter:saturate(.86);
+      z-index:1;
+    }
+
+    .stack-card.active{
+      transform:translate(0,0) scale(1) rotate(0deg);
+      opacity:1;
+      filter:none;
+      z-index:3;
+      animation:pickPulse .58s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    @keyframes pickPulse{
+      0%{transform:translateY(10px) scale(.96) rotate(-1deg);opacity:.55;}
+      60%{transform:translateY(-4px) scale(1.01) rotate(.4deg);opacity:1;}
+      100%{transform:translateY(0) scale(1) rotate(0deg);opacity:1;}
+    }
+
+    .pick-card-top{
+      height:150px;
+      border-bottom:2.5px solid var(--line);
+      background:
+        radial-gradient(circle at 20% 20%, rgba(255,255,255,.35), transparent 16%),
+        linear-gradient(135deg, #f0c36d 0%, #ef8a62 42%, #7c9a6d 100%);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:76px;
+    }
+
+    .pick-card-body{padding:18px;}
+    .pick-card-title{font-size:26px;font-weight:900;margin-bottom:8px;letter-spacing:-.04em;}
+    .pick-card-desc{color:var(--sub);font-size:14px;line-height:1.6;font-weight:500;margin-bottom:12px;}
+
+    .picker-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:center;
+    }
+
+    .day-body{padding:22px;}
+    .day-grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:12px;
+      margin-top:8px;
+    }
+
+    .day-btn{
+      border:2.5px solid var(--line);
+      background:#fff;
+      border-radius:18px;
+      padding:14px;
+      font-size:14px;
+      font-weight:900;
+      cursor:pointer;
+      box-shadow:4px 4px 0 #201a17;
+    }
+
+    .no-results{
+      grid-column:1 / -1;
+      border:2.5px dashed #b6a491;
+      border-radius:24px;
+      background:#fff;
+      padding:56px 20px;
+      text-align:center;
+    }
+
+    .no-results .emoji{
+      font-size:54px;
+      margin-bottom:12px;
+    }
+
+    .tab-summary{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:12px;
+    }
+
+    .summary-chip{
+      padding:9px 12px;
+      font-size:12px;
+      font-weight:900;
+    }
+
+    @media (max-width: 1180px){
+      .results-top,.modal-body,.recipe-grid,.planner-grid,.day-grid{grid-template-columns:1fr;}
+      .layout{grid-template-columns:1fr;}
+      .sidebar{position:static;}
+    }
+
+    @media (max-width: 768px){
+      body{padding:14px;}
+      .topbar{flex-direction:column;align-items:flex-start;}
+      .search-row{flex-direction:column;}
+      .btn{width:100%;}
+      .tools-actions,.planner-helper,.picker-actions{flex-direction:column;}
+      .tabs-bar{flex-wrap:nowrap;padding-bottom:12px;}
+      .recipe-emoji{font-size:64px;}
+      .detail-emoji{font-size:82px;}
+      .hero-visual{height:128px;font-size:56px;}
+      .hero-focus-body h2{font-size:22px;}
+      .hero-focus-body p{font-size:14px;}
+      .pick-card-title{font-size:22px;}
+      .pick-card-top{font-size:62px;height:128px;}
+      .shuffle-stage{min-height:330px;}
+      .shuffle-stack{height:290px;}
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="topbar">
+      <div class="brand">
+        <div class="brand-icon">🧊</div>
+        <div class="brand-copy">
+          <h1>냉장고를 부탁해</h1>
+          <p>재료를 넣으면 오늘 메뉴까지 정해주는 홈쿠킹 앱</p>
+        </div>
+      </div>
+      <div class="top-actions">
+        <button class="chip-btn" id="openPickerTop">오늘 메뉴 뽑기</button>
+        <button class="chip-btn primary" id="goRecommendTop">추천 보기</button>
+      </div>
+    </div>
+
+    <section class="hero-single">
+      <div class="panel hero-focus">
+        <div class="hero-focus-top">
+          <div class="hero-badge">오늘의 한 끼</div>
+        </div>
+        <div class="hero-visual" aria-hidden="true">🍱</div>
+        <div class="hero-focus-body">
+          <h2>오늘은 뭘 해먹지?</h2>
+          <p>냉장고에 있는 재료를 기준으로 만들 수 있는 메뉴를 찾고, 마음에 들면 저장하고, 부족한 재료는 장보기로 넘길 수 있습니다.</p>
+        </div>
+      </div>
+
+      <div class="hero-stats">
+        <div class="mini-card"><strong id="recipeCountStat">0개</strong><span>전체 레시피</span></div>
+        <div class="mini-card"><strong id="selectedCountStat">0개</strong><span>선택한 재료</span></div>
+        <div class="mini-card"><strong id="favoriteCountStat">0개</strong><span>즐겨찾기</span></div>
+        <div class="mini-card"><strong id="shoppingCountStat">0개</strong><span>장보기 항목</span></div>
+      </div>
+    </section>
+
+    <div class="layout">
+      <aside class="panel sidebar">
+        <div class="section-title">냉장고 재료</div>
+        <div class="section-sub">재료를 넣고 메뉴를 찾은 다음, 즐겨찾기·장보기·식단표로 바로 이어가세요.</div>
+
+        <div class="search-row">
+          <div class="input-wrap">
+            <svg class="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+            <input type="text" class="search-input" placeholder="예: 계란, 양파, 김치" id="ingredientSearch">
+          </div>
+          <button class="btn primary" id="addIngredientBtn">추가</button>
+        </div>
+
+        <div class="block">
+          <div class="block-head">
+            <h3>카테고리</h3>
+            <span>분위기별로 보기</span>
+          </div>
+          <div class="category-tabs">
+            <button class="category-btn active" data-category="all">전체</button>
+            <button class="category-btn" data-category="한식">한식</button>
+            <button class="category-btn" data-category="양식">양식</button>
+            <button class="category-btn" data-category="중식">중식</button>
+            <button class="category-btn" data-category="일식">일식</button>
+            <button class="category-btn" data-category="야식">야식</button>
+            <button class="category-btn" data-category="간식">간식</button>
+            <button class="category-btn" data-category="다이어트">다이어트</button>
+          </div>
+        </div>
+
+        <div class="block">
+          <div class="block-head">
+            <h3>선택한 재료</h3>
+            <span id="selectedCountLabel">0개 선택됨</span>
+          </div>
+          <div class="selected-ingredients" id="selectedIngredients"></div>
+          <div class="empty-note" id="emptyIngredientNote">아직 선택한 재료가 없습니다. 자주 쓰는 재료부터 추가해보세요.</div>
+        </div>
+
+        <div class="block">
+          <button class="btn green block" id="openPickerSide">오늘 메뉴 뽑기</button>
+        </div>
+      </aside>
+
+      <main class="panel content-panel">
+        <div class="tabs-bar" role="tablist" aria-label="기능 탭">
+          <button class="tab-btn active" id="tab-btn-recommend" role="tab" aria-selected="true" aria-controls="tab-recommend" tabindex="0" data-tab="recommend">추천</button>
+          <button class="tab-btn" id="tab-btn-favorites" role="tab" aria-selected="false" aria-controls="tab-favorites" tabindex="-1" data-tab="favorites">즐겨찾기</button>
+          <button class="tab-btn" id="tab-btn-shopping" role="tab" aria-selected="false" aria-controls="tab-shopping" tabindex="-1" data-tab="shopping">장보기</button>
+          <button class="tab-btn" id="tab-btn-planner" role="tab" aria-selected="false" aria-controls="tab-planner" tabindex="-1" data-tab="planner">식단표</button>
+        </div>
+
+        <section class="tab-panel active" id="tab-recommend" role="tabpanel" aria-labelledby="tab-btn-recommend">
+          <div class="results-top">
+            <div class="results-intro">
+              <h2 id="resultsTitle">추천 레시피</h2>
+              <p id="resultsSub">재료와 카테고리에 맞는 메뉴를 확인하고, 상세보기로 바로 이어가세요.</p>
+            </div>
+            <div class="results-tools">
+              <p>못 고르겠으면 메뉴 뽑기로 하나를 정하고, 마음에 들면 즐겨찾기와 장보기로 연결하세요.</p>
+              <div class="tools-actions">
+                <button class="btn soft" id="pickerBtn">메뉴 뽑기</button>
+                <button class="btn" id="moveFavoritesBtn">즐겨찾기 보기</button>
+                <button class="btn" id="moveShoppingBtn">장보기 보기</button>
+              </div>
+            </div>
+          </div>
+          <div class="recipe-grid" id="recipeGrid"></div>
+        </section>
+
+        <section class="tab-panel" id="tab-favorites" role="tabpanel" aria-labelledby="tab-btn-favorites" hidden>
+          <div class="section-box">
+            <h2>즐겨찾기</h2>
+            <p>마음에 드는 메뉴를 저장해두고 나중에 다시 확인할 수 있습니다.</p>
+            <div class="tab-summary">
+              <div class="summary-chip" id="favoritesSummary">저장된 메뉴 0개</div>
+            </div>
+          </div>
+          <div class="favorite-grid" id="favoriteList" style="margin-top:16px;"></div>
+        </section>
+
+        <section class="tab-panel" id="tab-shopping" role="tabpanel" aria-labelledby="tab-btn-shopping" hidden>
+          <div class="section-box">
+            <h2>장보기 리스트</h2>
+            <p>추천 메뉴에서 부족한 재료를 담고, 체크하면서 관리해보세요.</p>
+            <div class="tab-summary">
+              <div class="summary-chip" id="shoppingSummary">담긴 항목 0개</div>
+            </div>
+          </div>
+          <div class="shopping-grid" id="shoppingList" style="margin-top:16px;"></div>
+        </section>
+
+        <section class="tab-panel" id="tab-planner" role="tabpanel" aria-labelledby="tab-btn-planner" hidden>
+          <div class="section-box">
+            <h2>주간 식단표</h2>
+            <p>좋아하는 메뉴를 요일별로 넣어서 한 주 식사를 미리 계획해보세요.</p>
+            <div class="planner-helper">
+              <button class="btn" id="plannerRecommendBtn">추천 탭으로 가기</button>
+              <button class="btn soft" id="plannerPickerBtn">메뉴 뽑기 열기</button>
+            </div>
+          </div>
+          <div class="planner-grid" id="plannerGrid"></div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="recipeModalOverlay">
+    <div class="modal">
+      <div class="modal-head">
+        <h3 id="modalRecipeTitle">레시피 상세</h3>
+        <button class="close-btn" id="closeRecipeModal">✕</button>
+      </div>
+      <div class="modal-body" id="modalBody"></div>
+    </div>
+  </div>
+
+  <div class="picker-overlay" id="pickerOverlay">
+    <div class="picker-modal">
+      <div class="modal-head">
+        <h3>오늘의 메뉴 뽑기</h3>
+        <button class="close-btn" id="closePickerModal">✕</button>
+      </div>
+      <div class="picker-body">
+        <div class="picker-sub">후보 메뉴가 빠르게 바뀌다가 오늘의 메뉴 하나를 골라드립니다.</div>
+        <div class="picker-result" id="pickerResult">버튼을 눌러 오늘 메뉴를 정해보세요</div>
+        <div class="shuffle-stage">
+          <div class="shuffle-stack">
+            <div class="stack-card back-2" id="stackBack2"></div>
+            <div class="stack-card back-1" id="stackBack1"></div>
+            <div class="stack-card active" id="stackActive"></div>
+          </div>
+        </div>
+        <div class="picker-actions">
+          <button class="btn primary" id="startPickBtn">메뉴 뽑기 시작</button>
+          <button class="btn" id="pickDetailBtn">상세 보기</button>
+          <button class="btn" id="pickPlannerBtn">식단표 담기</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="day-overlay" id="dayOverlay">
+    <div class="day-modal">
+      <div class="modal-head">
+        <h3>요일 선택</h3>
+        <button class="close-btn" id="closeDayModal">✕</button>
+      </div>
+      <div class="day-body">
+        <p id="dayModalText" style="font-size:14px;color:var(--sub);font-weight:600;margin-bottom:14px;">식단표에 추가할 요일을 선택하세요.</p>
+        <div class="day-grid" id="dayGrid"></div>
+      </div>
+    </div>
+  </div>
+  <script>
+  const weekdays = ["월요일","화요일","수요일","목요일","금요일","토요일","일요일"];
+
+  const recipeTemplates = {
+    "김치찌개": {emoji:"🍲", category:"한식", time:"25분", difficulty:"쉬움", ingredients:["김치","돼지고기","두부","양파","청양고추","고춧가루"], desc:"잘 익은 김치와 돼지고기를 활용해 깊고 칼칼한 맛을 내기 좋은 대표 집밥 메뉴"},
+    "된장찌개": {emoji:"🍲", category:"한식", time:"20분", difficulty:"쉬움", ingredients:["된장","두부","애호박","양파","감자"], desc:"구수한 장맛과 채소 풍미가 어우러지는 편안한 기본 찌개"},
+    "순두부찌개": {emoji:"🍲", category:"한식", time:"20분", difficulty:"보통", ingredients:["순두부","계란","양파","대파","고춧가루"], desc:"부드러운 순두부와 칼칼한 국물이 매력적인 따뜻한 한 끼 메뉴"},
+    "제육볶음": {emoji:"🥘", category:"한식", time:"20분", difficulty:"보통", ingredients:["돼지고기","양파","대파","고추장","마늘"], desc:"매콤달콤한 양념이 밥과 잘 어울리는 든든한 볶음 요리"},
+    "불고기": {emoji:"🥩", category:"한식", time:"25분", difficulty:"보통", ingredients:["소고기","양파","간장","배","마늘"], desc:"달짝지근한 간장 양념으로 누구나 부담 없이 먹기 좋은 대표 고기 요리"},
+    "비빔밥": {emoji:"🍚", category:"한식", time:"20분", difficulty:"보통", ingredients:["밥","계란","시금치","당근","고추장"], desc:"여러 재료를 한 그릇에 정리해 먹기 좋은 균형형 메뉴"},
+    "잡채": {emoji:"🥢", category:"한식", time:"30분", difficulty:"보통", ingredients:["당면","시금치","당근","양파","간장"], desc:"쫄깃한 당면과 채소가 잘 어우러지는 잔치 느낌의 볶음 요리"},
+    "김치볶음밥": {emoji:"🍚", category:"한식", time:"15분", difficulty:"쉬움", ingredients:["김치","밥","계란","대파"], desc:"남은 밥과 김치를 가장 만족스럽게 활용할 수 있는 한 그릇 메뉴"},
+    "부대찌개": {emoji:"🍲", category:"한식", time:"25분", difficulty:"보통", ingredients:["햄","소시지","김치","라면사리","양파"], desc:"햄과 김치, 사리가 어우러져 진하고 자극적인 맛을 내는 인기 찌개"},
+    "계란말이": {emoji:"🍳", category:"한식", time:"10분", difficulty:"쉬움", ingredients:["계란","대파","당근","소금"], desc:"간단하지만 식탁 만족도가 높은 기본 반찬 겸 한 끼 메뉴"},
+
+    "파스타": {emoji:"🍝", category:"양식", time:"18분", difficulty:"보통", ingredients:["파스타면","마늘","올리브오일","토마토","양파"], desc:"기본 재료만 있어도 완성도 있게 즐길 수 있는 대표 면 요리"},
+    "감바스": {emoji:"🍤", category:"양식", time:"15분", difficulty:"보통", ingredients:["새우","마늘","올리브오일","페퍼론치노"], desc:"짧은 시간 안에 분위기 있는 식탁을 만들기 좋은 메뉴"},
+    "오므라이스": {emoji:"🍳", category:"양식", time:"20분", difficulty:"보통", ingredients:["계란","밥","양파","당근","케찹"], desc:"부드러운 계란과 볶음밥 조합이 매력적인 클래식 메뉴"},
+    "리조또": {emoji:"🧀", category:"양식", time:"25분", difficulty:"보통", ingredients:["밥","우유","양파","버섯","치즈"], desc:"부드럽고 고소한 식감으로 편안하게 먹기 좋은 크리미한 메뉴"},
+    "토스트": {emoji:"🍞", category:"양식", time:"10분", difficulty:"쉬움", ingredients:["식빵","계란","버터","치즈"], desc:"아침이나 간단한 한 끼로 빠르게 만들기 좋은 메뉴"},
+    "크림파스타": {emoji:"🍝", category:"양식", time:"20분", difficulty:"보통", ingredients:["파스타면","우유","양파","치즈","베이컨"], desc:"고소하고 부드러운 소스로 누구나 먹기 편한 파스타"},
+    "라자냐": {emoji:"🧀", category:"양식", time:"35분", difficulty:"어려움", ingredients:["라자냐면","토마토소스","치즈","다진고기"], desc:"겹겹이 쌓인 식감과 진한 풍미가 매력적인 오븐 요리"},
+    "치킨스테이크": {emoji:"🍗", category:"양식", time:"20분", difficulty:"보통", ingredients:["닭고기","버터","마늘","후추"], desc:"겉은 노릇하고 속은 촉촉하게 즐기는 팬 구이 메뉴"},
+    "감자수프": {emoji:"🥣", category:"양식", time:"20분", difficulty:"쉬움", ingredients:["감자","우유","양파","버터"], desc:"부드럽고 포근한 질감으로 부담 없이 먹기 좋은 수프"},
+    "샌드위치": {emoji:"🥪", category:"양식", time:"10분", difficulty:"쉬움", ingredients:["식빵","양상추","토마토","계란","치즈"], desc:"속재료를 자유롭게 바꿔가며 만들기 좋은 실용적인 메뉴"},
+
+    "계란볶음밥": {emoji:"🍚", category:"중식", time:"15분", difficulty:"쉬움", ingredients:["계란","밥","대파","간장","양파"], desc:"짧은 시간에 만들기 좋은 실속형 볶음밥"},
+    "마파두부": {emoji:"🥘", category:"중식", time:"20분", difficulty:"보통", ingredients:["두부","다진고기","대파","고추기름","마늘"], desc:"두부를 매콤하고 진하게 즐길 수 있는 밥도둑 메뉴"},
+    "짜장밥": {emoji:"🍛", category:"중식", time:"25분", difficulty:"보통", ingredients:["짜장가루","양파","감자","돼지고기","밥"], desc:"달짝지근하고 진한 소스가 매력적인 한 그릇 메뉴"},
+    "탕수육": {emoji:"🍖", category:"중식", time:"30분", difficulty:"어려움", ingredients:["돼지고기","전분","양파","당근","식초"], desc:"바삭한 식감과 새콤달콤한 소스 조합이 매력적인 요리"},
+    "토마토달걀볶음": {emoji:"🍅", category:"중식", time:"12분", difficulty:"쉬움", ingredients:["계란","토마토","대파","소금"], desc:"부드럽고 산뜻한 맛으로 밥과 함께 먹기 좋은 볶음"},
+    "유린기": {emoji:"🍗", category:"중식", time:"25분", difficulty:"보통", ingredients:["닭고기","전분","간장","식초","양상추"], desc:"바삭한 닭튀김과 상큼한 소스가 어우러지는 메뉴"},
+    "고추잡채": {emoji:"🌶️", category:"중식", time:"20분", difficulty:"보통", ingredients:["피망","돼지고기","간장","양파"], desc:"아삭한 채소와 짭짤한 볶음 향이 살아있는 요리"},
+    "깐풍새우": {emoji:"🍤", category:"중식", time:"25분", difficulty:"보통", ingredients:["새우","전분","마늘","고추","간장"], desc:"바삭한 새우와 매콤달콤한 소스가 잘 어울리는 중식 메뉴"},
+    "볶음짬뽕": {emoji:"🍜", category:"중식", time:"20분", difficulty:"보통", ingredients:["짬뽕면","양파","양배추","오징어","고춧가루"], desc:"칼칼하고 불향 있는 볶음면 스타일 메뉴"},
+    "마라두부덮밥": {emoji:"🍛", category:"중식", time:"18분", difficulty:"보통", ingredients:["두부","대파","고추기름","밥","다진고기"], desc:"매콤한 풍미를 살린 덮밥 스타일 메뉴"},
+
+    "초밥": {emoji:"🍣", category:"일식", time:"30분", difficulty:"어려움", ingredients:["밥","식초","연어","김"], desc:"재료가 맞으면 특별한 분위기를 낼 수 있는 대표 일식 메뉴"},
+    "오야코동": {emoji:"🍚", category:"일식", time:"20분", difficulty:"보통", ingredients:["닭고기","계란","양파","간장","밥"], desc:"짭짤하고 부드러운 식감이 좋은 일본식 덮밥"},
+    "가라아게": {emoji:"🍗", category:"일식", time:"25분", difficulty:"보통", ingredients:["닭고기","전분","간장","마늘"], desc:"겉은 바삭하고 속은 촉촉한 일본식 치킨"},
+    "된장국": {emoji:"🍲", category:"일식", time:"15분", difficulty:"쉬움", ingredients:["된장","두부","대파","미역"], desc:"담백하고 깔끔하게 즐기기 좋은 국물 메뉴"},
+    "야끼우동": {emoji:"🍜", category:"일식", time:"20분", difficulty:"보통", ingredients:["우동면","양배추","양파","간장","돼지고기"], desc:"짭짤한 볶음 간장 풍미가 살아있는 면 요리"},
+    "돈부리": {emoji:"🍚", category:"일식", time:"18분", difficulty:"쉬움", ingredients:["밥","닭고기","양파","간장","계란"], desc:"간편하게 만들 수 있는 일본식 덮밥 메뉴"},
+    "규동": {emoji:"🥩", category:"일식", time:"20분", difficulty:"보통", ingredients:["소고기","양파","간장","밥"], desc:"달짝지근한 간장 베이스로 즐기는 소고기 덮밥"},
+    "카레우동": {emoji:"🍜", category:"일식", time:"20분", difficulty:"보통", ingredients:["우동면","카레","양파","감자"], desc:"카레의 진한 풍미와 우동의 쫄깃함을 함께 즐기는 메뉴"},
+    "계란산도": {emoji:"🥪", category:"일식", time:"10분", difficulty:"쉬움", ingredients:["식빵","계란","마요네즈"], desc:"부드럽고 간단하게 먹기 좋은 일본식 샌드위치"},
+    "오코노미야끼": {emoji:"🥞", category:"일식", time:"25분", difficulty:"보통", ingredients:["양배추","밀가루","계란","가쓰오부시"], desc:"양배추 듬뿍 넣어 만드는 일본식 전 스타일 메뉴"},
+
+    "라면": {emoji:"🍜", category:"야식", time:"10분", difficulty:"쉬움", ingredients:["라면","계란","대파"], desc:"가장 빠르고 확실한 야식 메뉴"},
+    "떡볶이": {emoji:"🌶️", category:"야식", time:"15분", difficulty:"쉬움", ingredients:["떡","고추장","어묵","대파"], desc:"매콤달콤한 분식 스타일 야식"},
+    "치즈계란토스트": {emoji:"🥪", category:"야식", time:"10분", difficulty:"쉬움", ingredients:["식빵","계란","치즈","버터"], desc:"짧은 시간에 포만감 있게 먹기 좋은 메뉴"},
+    "어묵탕": {emoji:"🍢", category:"야식", time:"15분", difficulty:"쉬움", ingredients:["어묵","대파","무","간장"], desc:"국물 생각날 때 부담 없이 즐기기 좋은 메뉴"},
+    "야식볶음우동": {emoji:"🍜", category:"야식", time:"15분", difficulty:"쉬움", ingredients:["우동면","양파","간장","대파"], desc:"짭짤하게 볶아 밤에 간단히 먹기 좋은 메뉴"},
+    "참치마요덮밥": {emoji:"🍚", category:"야식", time:"8분", difficulty:"쉬움", ingredients:["밥","참치","마요네즈","김"], desc:"간단하지만 만족감이 높은 초간단 야식 메뉴"},
+    "버터간장계란밥": {emoji:"🍚", category:"야식", time:"5분", difficulty:"쉬움", ingredients:["밥","계란","버터","간장"], desc:"아무것도 없을 때도 만들기 쉬운 최소 재료 메뉴"},
+    "소시지볶음": {emoji:"🌭", category:"야식", time:"10분", difficulty:"쉬움", ingredients:["소시지","케찹","양파"], desc:"짭짤달콤한 맛으로 부담 없이 먹기 좋은 야식 반찬"},
+    "만두라면": {emoji:"🥟", category:"야식", time:"12분", difficulty:"쉬움", ingredients:["라면","만두","대파"], desc:"라면에 만두를 더해 더 든든하게 먹는 메뉴"},
+    "치즈떡": {emoji:"🧀", category:"야식", time:"10분", difficulty:"쉬움", ingredients:["떡","치즈","버터"], desc:"간단하게 구워 먹기 좋은 쫀득한 간식형 야식"},
+
+    "군만두": {emoji:"🥟", category:"간식", time:"10분", difficulty:"쉬움", ingredients:["만두","식용유"], desc:"겉은 바삭하고 속은 촉촉하게 즐기는 팬 조리 간식"},
+    "프렌치토스트": {emoji:"🍞", category:"간식", time:"15분", difficulty:"쉬움", ingredients:["식빵","계란","우유","버터"], desc:"달콤하고 부드러운 브런치형 간식"},
+    "감자전": {emoji:"🥔", category:"간식", time:"20분", difficulty:"보통", ingredients:["감자","전분","소금"], desc:"간단한 재료로 고소하게 즐기는 전 메뉴"},
+    "핫케이크": {emoji:"🥞", category:"간식", time:"15분", difficulty:"쉬움", ingredients:["핫케이크가루","계란","우유"], desc:"누구나 쉽게 만들 수 있는 기본 간식"},
+    "콘치즈": {emoji:"🌽", category:"간식", time:"10분", difficulty:"쉬움", ingredients:["옥수수","마요네즈","치즈","버터"], desc:"짭짤고소한 맛이 매력적인 인기 사이드 메뉴"},
+    "토르티야피자": {emoji:"🍕", category:"간식", time:"12분", difficulty:"쉬움", ingredients:["또띠아","치즈","토마토소스"], desc:"오븐이나 팬으로 간단히 만드는 피자 스타일 간식"},
+    "치즈볼": {emoji:"🧀", category:"간식", time:"18분", difficulty:"보통", ingredients:["치즈","밀가루","빵가루"], desc:"겉은 바삭하고 속은 쫀득한 치즈 간식"},
+    "고구마맛탕": {emoji:"🍠", category:"간식", time:"20분", difficulty:"보통", ingredients:["고구마","설탕","식용유"], desc:"달콤한 코팅이 매력적인 추억의 간식"},
+    "주먹밥": {emoji:"🍙", category:"간식", time:"10분", difficulty:"쉬움", ingredients:["밥","김가루","참기름"], desc:"간단하게 뭉쳐 먹기 좋은 휴대형 간식"},
+    "소떡소떡": {emoji:"🍢", category:"간식", time:"12분", difficulty:"쉬움", ingredients:["소시지","떡","케찹"], desc:"달콤한 소스로 가볍게 즐기는 길거리 간식 스타일 메뉴"},
+
+    "닭가슴살샐러드": {emoji:"🥗", category:"다이어트", time:"10분", difficulty:"쉬움", ingredients:["닭가슴살","양상추","토마토","오이"], desc:"가볍지만 단백질 보충이 가능한 샐러드 메뉴"},
+    "계란샐러드": {emoji:"🥗", category:"다이어트", time:"12분", difficulty:"쉬움", ingredients:["계란","양상추","오이","올리브오일"], desc:"준비가 간단한 균형형 샐러드"},
+    "두부샐러드": {emoji:"🥗", category:"다이어트", time:"10분", difficulty:"쉬움", ingredients:["두부","양상추","토마토","간장"], desc:"담백하게 먹기 좋은 식물성 단백질 메뉴"},
+    "오트밀": {emoji:"🥣", category:"다이어트", time:"8분", difficulty:"쉬움", ingredients:["오트밀","우유","바나나"], desc:"간단하게 준비할 수 있는 식사 대용 메뉴"},
+    "고구마플레이트": {emoji:"🍠", category:"다이어트", time:"15분", difficulty:"쉬움", ingredients:["고구마","계란","우유"], desc:"포만감과 간편함을 동시에 챙기는 메뉴"},
+    "연어샐러드": {emoji:"🥗", category:"다이어트", time:"12분", difficulty:"쉬움", ingredients:["연어","양상추","오이","레몬"], desc:"가볍지만 풍미와 단백질을 챙기기 좋은 메뉴"},
+    "그릭요거트볼": {emoji:"🍓", category:"다이어트", time:"5분", difficulty:"쉬움", ingredients:["그릭요거트","바나나","딸기","견과류"], desc:"상큼하고 가볍게 즐길 수 있는 단백질 간식형 메뉴"},
+    "현미볶음밥": {emoji:"🍚", category:"다이어트", time:"15분", difficulty:"쉬움", ingredients:["현미밥","계란","브로콜리","당근"], desc:"채소를 곁들여 균형감 있게 즐기는 볶음밥"},
+    "참치샐러드": {emoji:"🥗", category:"다이어트", time:"8분", difficulty:"쉬움", ingredients:["참치","양상추","오이","토마토"], desc:"짧은 시간 안에 만들 수 있는 실속형 샐러드"},
+    "버섯에그볼": {emoji:"🍳", category:"다이어트", time:"12분", difficulty:"쉬움", ingredients:["계란","버섯","양파","후추"], desc:"가볍지만 따뜻하게 먹기 좋은 단백질 중심 메뉴"}
+  };
+
+  function buildDetailedSteps(name, category, ingredients) {
+    const first = ingredients[0] || "재료";
+    const second = ingredients[1] || "부재료";
+    const third = ingredients[2] || "양념";
+    const fourth = ingredients[3] || "추가 재료";
+
+    if (category === "한식") {
+      return [
+        `먼저 ${first}, ${second}, ${third}를 손질하고 한 번에 넣기 좋도록 먹기 좋은 크기로 준비합니다. 양파나 대파처럼 향을 내는 재료가 있다면 미리 썰어두면 조리 흐름이 훨씬 편해집니다.`,
+        `팬이나 냄비를 중불로 달군 뒤 기름을 약간 두르고 향을 내는 재료부터 먼저 볶아 기본 풍미를 만듭니다. 고기나 김치처럼 맛의 중심이 되는 재료가 있다면 이 단계에서 충분히 볶아 깊은 맛을 내는 것이 좋습니다.`,
+        `${third}와 ${fourth} 같은 부재료를 순서대로 넣고, 재료에서 나온 맛이 전체에 잘 퍼지도록 2~3분 정도 더 익혀줍니다. 너무 센 불로 한 번에 익히기보다 중불에서 천천히 익히면 간이 안정적으로 배어듭니다.`,
+        `국물 요리라면 물이나 육수를 넣고 한소끔 끓인 뒤 간을 맞추고, 볶음 요리라면 양념이 골고루 묻도록 뒤집듯 섞어줍니다. 마지막에는 색과 향이 강한 재료를 넣어 전체 맛을 정리합니다.`,
+        `완성 직전 간을 다시 확인한 뒤 그릇에 담아냅니다. 밥과 함께 먹는 메뉴라면 참기름이나 깨를 약간 더해 마무리하면 풍미가 더 살아납니다.`
+      ];
+    }
+
+    if (category === "양식") {
+      return [
+        `먼저 ${first}, ${second}, ${third}를 조리 순서에 맞게 손질합니다. 면이나 빵처럼 먼저 준비해야 하는 재료가 있다면 초반에 세팅해두면 전체 조리 시간이 짧아집니다.`,
+        `팬을 중불로 달군 뒤 버터나 오일을 넣고 향이 필요한 재료부터 볶습니다. 마늘이나 양파처럼 기본 향을 내는 재료는 색이 너무 진해지지 않을 정도까지만 천천히 익혀야 전체 맛이 깔끔합니다.`,
+        `${third}와 ${fourth}를 추가하고 소스나 수분감을 맞춰 전체 밸런스를 잡습니다. 면 요리라면 면수나 우유처럼 농도를 조절할 수 있는 재료를 조금씩 넣는 것이 좋습니다.`,
+        `주재료가 충분히 익으면 불을 줄이고 간을 확인합니다. 치즈나 크림처럼 열에 민감한 재료는 마지막에 넣어야 분리되지 않고 부드럽게 마무리됩니다.`,
+        `접시에 담은 뒤 후추, 허브, 파슬리 같은 마무리 재료를 더하면 훨씬 완성도 있게 보입니다. 식감이 중요한 메뉴는 완성 즉시 먹는 것이 가장 좋습니다.`
+      ];
+    }
+
+    if (category === "중식") {
+      return [
+        `먼저 ${first}, ${second}, ${third}를 손질하고 양념에 들어갈 재료를 미리 섞어 준비합니다. 중식 계열 메뉴는 불 조절과 순서가 중요해서 시작 전에 재료를 전부 세팅하는 것이 좋습니다.`,
+        `팬을 충분히 달군 뒤 기름을 두르고 파, 마늘, 양파처럼 향을 내는 재료를 먼저 볶아 향을 올립니다. 이때 너무 오래 익히면 쓴맛이 날 수 있으니 향이 올라오는 순간 다음 단계로 넘어갑니다.`,
+        `${third}나 ${fourth} 같은 중심 재료를 넣고 센 불에서 빠르게 볶아 식감과 불향을 살립니다. 수분이 많은 재료는 너무 오래 익히지 말고 짧고 강하게 조리하는 것이 포인트입니다.`,
+        `준비한 양념이나 소스를 넣고 재료 전체에 고르게 코팅되도록 뒤집듯 섞어줍니다. 덮밥류라면 약간 걸쭉하게, 볶음류라면 너무 질지 않게 농도를 맞추는 것이 좋습니다.`,
+        `완성 후에는 불을 끄고 잠깐 식혀 접시에 담습니다. 고추기름, 후추, 파 같은 마무리 재료를 올리면 향과 색감이 더 살아납니다.`
+      ];
+    }
+
+    if (category === "일식") {
+      return [
+        `먼저 ${first}, ${second}, ${third}를 깔끔하게 손질하고 재료별 익는 시간을 고려해 순서를 정합니다. 일식은 과한 양념보다 재료 맛을 정리해주는 조리가 중요합니다.`,
+        `팬이나 냄비를 중불로 예열한 뒤 간장 베이스나 육수 베이스가 필요한 경우 먼저 밑국물 또는 기본 소스를 만듭니다. 이 단계에서 짠맛을 너무 강하게 하지 않는 것이 중요합니다.`,
+        `${third}와 ${fourth}를 넣고 재료 모양이 흐트러지지 않도록 조심스럽게 익힙니다. 달걀이나 두부처럼 부드러운 재료는 마지막에 넣어 식감을 살리는 편이 좋습니다.`,
+        `국물이나 소스가 필요한 메뉴는 재료 맛이 어우러질 정도까지만 끓이고, 볶음면이나 덮밥은 수분이 너무 많지 않게 마무리합니다. 과하게 졸이면 짠맛이 강해질 수 있습니다.`,
+        `완성 후에는 밥이나 면과 함께 담아내고, 김가루나 파, 깨처럼 가벼운 토핑을 더하면 전체 인상이 더 정돈됩니다.`
+      ];
+    }
+
+    if (category === "야식") {
+      return [
+        `먼저 ${first}, ${second}, ${third}를 빠르게 손질하고 필요한 조리 도구를 준비합니다. 야식 메뉴는 속도가 중요하므로 조리 전에 재료를 전부 꺼내두면 훨씬 편합니다.`,
+        `팬이나 냄비를 예열하고 기본 재료부터 넣어 간단히 익힙니다. 향을 내는 재료가 있다면 초반에 넣어 맛의 중심을 만들어주는 것이 좋습니다.`,
+        `${third}와 ${fourth}를 추가해 전체 맛을 채운 뒤, 너무 복잡하게 하기보다 간이 명확하게 느껴지도록 조리합니다. 야식은 한 번에 강한 맛이 느껴지는 조합이 만족감이 높습니다.`,
+        `국물류라면 짧게 끓여도 맛이 살아나게 하고, 볶음류나 토스트류는 겉면이 마르지 않게 빠르게 마무리합니다. 치즈가 들어가면 마지막에 넣어 부드럽게 녹이는 편이 좋습니다.`,
+        `완성 후 바로 먹기 좋은 그릇에 옮겨 담고, 취향에 따라 후추나 김가루, 대파를 조금 더해 풍미를 보완합니다.`
+      ];
+    }
+
+    if (category === "간식") {
+      return [
+        `먼저 ${first}, ${second}, ${third}를 계량하거나 손질해 작업대에 정리합니다. 간식류는 준비가 단순해 보여도 재료 상태를 맞춰두면 완성도가 훨씬 좋아집니다.`,
+        `팬이나 오븐, 전자레인지 등 조리 도구를 먼저 예열하거나 준비합니다. 굽는 간식은 초반 온도와 도구 상태에 따라 식감 차이가 크게 납니다.`,
+        `${third}와 ${fourth}를 넣어 반죽하거나 조합을 맞추고, 너무 세게 섞지 않도록 주의합니다. 바삭함이 필요한 메뉴는 수분을 줄이고, 부드러움이 필요한 메뉴는 반죽 농도를 조금 여유 있게 맞춥니다.`,
+        `굽거나 지지는 동안은 색이 너무 빨리 진해지지 않는지 확인하면서 중약불에서 천천히 익힙니다. 뒤집는 타이밍을 너무 늦추면 모양이 흐트러질 수 있습니다.`,
+        `완성 후에는 한 김 식혀서 내거나, 따뜻할 때 바로 먹어야 하는 메뉴는 곧바로 담아냅니다. 시럽, 소스, 치즈, 허브 등을 추가하면 만족도가 더 올라갑니다.`
+      ];
+    }
+
+    if (category === "다이어트") {
+      return [
+        `먼저 ${first}, ${second}, ${third}를 깨끗하게 씻거나 손질해 준비합니다. 다이어트 메뉴는 재료 자체의 신선도와 식감이 중요하므로 가능한 한 깔끔하게 정리하는 것이 좋습니다.`,
+        `단백질 재료가 있다면 먼저 익히거나 물기를 제거해 준비합니다. 닭가슴살이나 두부처럼 수분이 많은 재료는 키친타월로 가볍게 정리하면 맛이 더 또렷해집니다.`,
+        `${third}와 ${fourth}를 더해 색감과 포만감을 맞추고, 드레싱이나 간은 너무 강하지 않게 조절합니다. 재료 본연의 맛이 살아야 부담 없이 먹기 좋습니다.`,
+        `따뜻하게 먹는 메뉴라면 짧게만 익혀 식감을 살리고, 차갑게 먹는 메뉴라면 그릇에 보기 좋게 배치해 먹는 만족감을 높입니다. 식감이 겹치지 않도록 부드러운 재료와 아삭한 재료를 섞는 것이 좋습니다.`,
+        `마지막에는 후추, 레몬, 올리브오일, 견과류 같은 가벼운 마무리 요소를 추가해 풍미를 보완합니다. 너무 많은 소스를 넣기보다 적당한 양으로 균형을 맞추는 것이 핵심입니다.`
+      ];
+    }
+
+    return [
+      `재료를 손질해 조리 순서에 맞게 준비합니다.`,
+      `팬이나 냄비를 예열하고 기본 재료부터 넣어 맛의 바탕을 만듭니다.`,
+      `주재료와 부재료를 순서대로 넣어 전체 균형을 맞춥니다.`,
+      `간을 확인하면서 원하는 농도와 식감으로 마무리합니다.`,
+      `그릇에 담고 필요한 토핑을 더해 완성합니다.`
+    ];
+  }
+
+  function buildDetailedTips(name, category) {
+    if (category === "한식") {
+      return [
+        "한식 메뉴는 재료를 충분히 볶아 기본 풍미를 만들어두면 짧은 시간에도 맛이 훨씬 깊어집니다.",
+        "국물 요리는 처음부터 간을 세게 하기보다 끓인 뒤 마지막에 조절해야 짠맛이 과해지지 않습니다.",
+        "대파, 청양고추, 참기름 같은 마무리 재료는 마지막에 넣을수록 향이 선명하게 살아납니다."
+      ];
+    }
+    if (category === "양식") {
+      return [
+        "버터나 치즈가 들어가는 메뉴는 너무 센 불에서 오래 익히면 맛이 무겁고 분리될 수 있으니 불 조절이 중요합니다.",
+        "면 요리는 면수를 조금 남겨두면 소스 농도를 자연스럽게 맞출 수 있어 훨씬 안정적입니다.",
+        "접시에 담은 뒤 후추나 허브를 조금 더해주면 집밥도 훨씬 레스토랑처럼 정리되어 보입니다."
+      ];
+    }
+    if (category === "중식") {
+      return [
+        "중식 계열은 재료를 한꺼번에 넣기보다 향 재료, 주재료, 소스 순서로 빠르게 진행해야 맛이 깔끔합니다.",
+        "센 불 조리가 많기 때문에 시작 전에 양념과 재료를 전부 준비해두는 것이 실패를 줄입니다.",
+        "전분이나 소스 농도는 한 번에 많이 넣지 말고 조금씩 조절해야 뭉치지 않고 자연스럽게 완성됩니다."
+      ];
+    }
+    if (category === "일식") {
+      return [
+        "일식 메뉴는 양념을 과하게 넣기보다 재료 본연의 맛이 보이도록 절제해서 간하는 것이 좋습니다.",
+        "간장 베이스 메뉴는 졸일수록 짠맛이 강해지므로 마지막 농도 조절을 꼭 확인하세요.",
+        "달걀이나 두부처럼 부드러운 재료는 너무 많이 저으면 식감이 무너질 수 있으니 조심스럽게 다루는 편이 좋습니다."
+      ];
+    }
+    if (category === "야식") {
+      return [
+        "야식 메뉴는 복잡한 조리보다 빠르고 분명한 맛이 중요하므로 재료를 너무 많이 넣지 않는 편이 좋습니다.",
+        "치즈, 계란, 대파 같은 재료만 추가해도 만족감이 크게 올라가므로 기본 메뉴에 소량만 보강해도 충분합니다.",
+        "밤에는 자극적인 맛이 끌릴 수 있지만 짠맛을 너무 세게 하면 먹고 난 뒤 부담이 커질 수 있어 적당한 균형이 좋습니다."
+      ];
+    }
+    if (category === "간식") {
+      return [
+        "간식류는 불이 너무 세면 겉만 익고 속이 덜 익을 수 있으니 중약불에서 천천히 조리하는 것이 좋습니다.",
+        "달콤한 재료가 들어가면 색이 빨리 진해지므로 구울 때는 자주 상태를 확인하세요.",
+        "완성 직후 가장 맛있는 메뉴가 많아서 한 번에 대량으로 만들기보다 먹을 만큼만 만드는 편이 만족도가 높습니다."
+      ];
+    }
+    if (category === "다이어트") {
+      return [
+        "다이어트 메뉴는 소스를 줄이는 대신 식감과 향을 살리면 훨씬 질리지 않고 오래 먹기 좋습니다.",
+        "단백질 재료와 채소를 같이 넣으면 포만감 유지에 도움이 되고 한 끼 균형도 좋아집니다.",
+        "올리브오일, 견과류, 후추, 레몬즙처럼 적은 양으로도 맛을 살릴 수 있는 재료를 활용하면 훨씬 만족스럽습니다."
+      ];
+    }
+    return [
+      "불 조절과 재료 넣는 순서를 지키면 완성도가 훨씬 좋아집니다.",
+      "간은 마지막에 다시 확인해 조절하는 것이 안전합니다.",
+      "마무리 토핑이나 향 재료를 더하면 만족도가 더 올라갑니다."
+    ];
+  }
+
+  const recipes = Object.entries(recipeTemplates).map(([name, info]) => ({
+    name,
+    ...info,
+    steps: buildDetailedSteps(name, info.category, info.ingredients),
+    tips: buildDetailedTips(name, info.category)
+  }));
+  const ingredientInput = document.getElementById("ingredientSearch");
+  const addIngredientBtn = document.getElementById("addIngredientBtn");
+  const selectedIngredientsEl = document.getElementById("selectedIngredients");
+  const recipeGrid = document.getElementById("recipeGrid");
+  const resultsTitle = document.getElementById("resultsTitle");
+  const resultsSub = document.getElementById("resultsSub");
+  const selectedCountLabel = document.getElementById("selectedCountLabel");
+  const emptyIngredientNote = document.getElementById("emptyIngredientNote");
+
+  const favoriteListEl = document.getElementById("favoriteList");
+  const shoppingListEl = document.getElementById("shoppingList");
+  const plannerGridEl = document.getElementById("plannerGrid");
+
+  const recipeModalOverlay = document.getElementById("recipeModalOverlay");
+  const modalRecipeTitle = document.getElementById("modalRecipeTitle");
+  const modalBody = document.getElementById("modalBody");
+  const closeRecipeModal = document.getElementById("closeRecipeModal");
+
+  const pickerOverlay = document.getElementById("pickerOverlay");
+  const closePickerModal = document.getElementById("closePickerModal");
+  const startPickBtn = document.getElementById("startPickBtn");
+  const pickDetailBtn = document.getElementById("pickDetailBtn");
+  const pickPlannerBtn = document.getElementById("pickPlannerBtn");
+  const pickerResult = document.getElementById("pickerResult");
+  const stackActive = document.getElementById("stackActive");
+  const stackBack1 = document.getElementById("stackBack1");
+  const stackBack2 = document.getElementById("stackBack2");
+
+  const dayOverlay = document.getElementById("dayOverlay");
+  const closeDayModal = document.getElementById("closeDayModal");
+  const dayGrid = document.getElementById("dayGrid");
+  const dayModalText = document.getElementById("dayModalText");
+
+  const recipeCountStat = document.getElementById("recipeCountStat");
+  const selectedCountStat = document.getElementById("selectedCountStat");
+  const favoriteCountStat = document.getElementById("favoriteCountStat");
+  const shoppingCountStat = document.getElementById("shoppingCountStat");
+  const favoritesSummary = document.getElementById("favoritesSummary");
+  const shoppingSummary = document.getElementById("shoppingSummary");
+
+  let selectedIngredients = [];
+  let currentCategory = "all";
+  let favorites = [];
+  let shoppingList = [];
+  let planner = {
+    "월요일": null,
+    "화요일": null,
+    "수요일": null,
+    "목요일": null,
+    "금요일": null,
+    "토요일": null,
+    "일요일": null
+  };
+
+  let currentPickedRecipe = null;
+  let pendingPlannerRecipe = null;
+
+  recipeCountStat.textContent = `${recipes.length}개`;
+
+  function normalize(text) {
+    return text.trim().toLowerCase();
+  }
+
+  function switchTab(tabName) {
+    document.querySelectorAll(".tab-btn").forEach(btn => {
+      const active = btn.dataset.tab === tabName;
+      btn.classList.toggle("active", active);
+      btn.setAttribute("aria-selected", active ? "true" : "false");
+      btn.setAttribute("tabindex", active ? "0" : "-1");
+    });
+
+    document.querySelectorAll(".tab-panel").forEach(panel => {
+      const active = panel.id === `tab-${tabName}`;
+      panel.classList.toggle("active", active);
+      if (active) {
+        panel.removeAttribute("hidden");
+      } else {
+        panel.setAttribute("hidden", "");
+      }
+    });
+  }
+
+  function addIngredient(value) {
+    const ingredient = value.trim();
+    if (!ingredient) return;
+
+    const exists = selectedIngredients.some(item => normalize(item) === normalize(ingredient));
+    if (exists) {
+      ingredientInput.value = "";
+      ingredientInput.focus();
+      return;
+    }
+
+    selectedIngredients.push(ingredient);
+    ingredientInput.value = "";
+    ingredientInput.focus();
+    renderSelectedIngredients();
+    renderRecipes();
+  }
+
+  function removeIngredient(index) {
+    selectedIngredients.splice(index, 1);
+    renderSelectedIngredients();
+    renderRecipes();
+  }
+
+  function renderSelectedIngredients() {
+    selectedCountLabel.textContent = `${selectedIngredients.length}개 선택됨`;
+    selectedCountStat.textContent = `${selectedIngredients.length}개`;
+
+    if (selectedIngredients.length === 0) {
+      selectedIngredientsEl.innerHTML = "";
+      emptyIngredientNote.style.display = "block";
+      return;
+    }
+
+    emptyIngredientNote.style.display = "none";
+    selectedIngredientsEl.innerHTML = selectedIngredients.map((ingredient, index) => `
+      <div class="ingredient-tag">
+        <span>${ingredient}</span>
+        <button class="remove-btn" onclick="removeIngredient(${index})">&times;</button>
+      </div>
+    `).join("");
+  }
+
+  function getMatchedRecipes() {
+    const filteredRecipes = recipes.filter(recipe => {
+      const categoryMatch = currentCategory === "all" || recipe.category === currentCategory;
+      if (!categoryMatch) return false;
+
+      if (selectedIngredients.length === 0) return true;
+
+      return selectedIngredients.some(selected =>
+        recipe.ingredients.some(ingredient =>
+          normalize(ingredient).includes(normalize(selected)) ||
+          normalize(selected).includes(normalize(ingredient))
+        )
+      );
+    });
+
+    return filteredRecipes.map(recipe => {
+      const availableIngredients = recipe.ingredients.filter(ingredient =>
+        selectedIngredients.some(selected =>
+          normalize(ingredient).includes(normalize(selected)) ||
+          normalize(selected).includes(normalize(ingredient))
+        )
+      );
+
+      const missingIngredients = recipe.ingredients.filter(ingredient =>
+        !selectedIngredients.some(selected =>
+          normalize(ingredient).includes(normalize(selected)) ||
+          normalize(selected).includes(normalize(ingredient))
+        )
+      );
+
+      const matchRate = selectedIngredients.length === 0
+        ? 0
+        : Math.round((availableIngredients.length / recipe.ingredients.length) * 100);
+
+      return {
+        ...recipe,
+        availableIngredients,
+        missingIngredients,
+        matchRate
+      };
+    }).sort((a, b) => {
+      if (b.matchRate !== a.matchRate) return b.matchRate - a.matchRate;
+      return a.missingIngredients.length - b.missingIngredients.length;
+    });
+  }
+
+  function renderRecipes() {
+    const filteredRecipes = getMatchedRecipes();
+
+    resultsTitle.textContent = currentCategory === "all" ? "추천 레시피" : `${currentCategory} 레시피`;
+    resultsSub.textContent = selectedIngredients.length === 0
+      ? "전체 메뉴를 둘러보거나 메뉴 뽑기로 오늘 메뉴를 정해보세요."
+      : `선택한 재료 ${selectedIngredients.length}개를 기준으로 만들 수 있는 메뉴를 정리했습니다.`;
+
+    if (filteredRecipes.length === 0) {
+      recipeGrid.innerHTML = `
+        <div class="no-results">
+          <div class="emoji">🥲</div>
+          <p>조건에 맞는 레시피가 없습니다. 다른 재료나 카테고리를 선택해보세요.</p>
+        </div>
+      `;
+      return;
+    }
+
+    recipeGrid.innerHTML = filteredRecipes.map(recipe => `
+      <article class="recipe-card">
+        <div class="recipe-thumb">
+          <div class="recipe-emoji" aria-hidden="true">${recipe.emoji || "🍽️"}</div>
+          <div class="recipe-badges">
+            <div class="badge">${recipe.category}</div>
+            <div class="badge">일치율 ${recipe.matchRate}%</div>
+          </div>
+        </div>
+
+        <div class="recipe-body">
+          <div class="recipe-head">
+            <div class="recipe-name">${recipe.name}</div>
+            <div class="recipe-time">${recipe.time}</div>
+          </div>
+
+          <div class="recipe-desc">${recipe.desc}</div>
+
+          <div class="meta-row">
+            <div class="meta-pill">난이도 ${recipe.difficulty}</div>
+            <div class="meta-pill">보유 ${recipe.availableIngredients.length}/${recipe.ingredients.length}</div>
+          </div>
+
+          <div class="materials-title">필요한 재료</div>
+          <div class="material-list">
+            ${recipe.ingredients.map(ingredient => {
+              const hasIt = recipe.availableIngredients.includes(ingredient);
+              return `<div class="material-item ${hasIt ? "available" : ""}">${ingredient}</div>`;
+            }).join("")}
+          </div>
+
+          ${selectedIngredients.length > 0 ? `
+            <div class="missing-box ${recipe.missingIngredients.length === 0 ? "complete" : ""}">
+              <div class="missing-title">
+                ${recipe.missingIngredients.length === 0 ? "지금 바로 만들 수 있어요" : "추가로 필요한 재료"}
+              </div>
+              <div class="missing-list">
+                ${
+                  recipe.missingIngredients.length === 0
+                  ? `<div class="missing-item">재료 준비 완료</div>`
+                  : recipe.missingIngredients.map(ingredient => `<div class="missing-item">${ingredient}</div>`).join("")
+                }
+              </div>
+            </div>
+          ` : ""}
+
+          <div class="card-actions">
+            <button class="mini-btn" onclick="openRecipeModal('${recipe.name}')">상세보기</button>
+            <button class="mini-btn ${favorites.includes(recipe.name) ? "filled" : ""}" onclick="toggleFavorite('${recipe.name}')">
+              ${favorites.includes(recipe.name) ? "저장됨" : "즐겨찾기"}
+            </button>
+            <button class="mini-btn" onclick="addMissingToShopping('${recipe.name}')">장보기 담기</button>
+            <button class="mini-btn" onclick="openDayModal('${recipe.name}')">식단표 담기</button>
+          </div>
+        </div>
+      </article>
+    `).join("");
+  }
+
+  function openRecipeModal(recipeName) {
+    const recipe = recipes.find(r => r.name === recipeName);
+    if (!recipe) return;
+
+    const matched = getMatchedRecipes().find(r => r.name === recipeName) || {
+      availableIngredients: [],
+      missingIngredients: recipe.ingredients,
+      matchRate: 0
+    };
+
+    modalRecipeTitle.textContent = recipe.name;
+    modalBody.innerHTML = `
+      <div>
+        <div class="detail-hero">
+          <div class="detail-visual">
+            <div class="detail-emoji" aria-hidden="true">${recipe.emoji || "🍽️"}</div>
+          </div>
+          <div class="detail-copy">
+            <div class="meta-row" style="margin-bottom:12px;">
+              <div class="meta-pill">${recipe.category}</div>
+              <div class="meta-pill">${recipe.time}</div>
+              <div class="meta-pill">난이도 ${recipe.difficulty}</div>
+              <div class="meta-pill">일치율 ${matched.matchRate}%</div>
+            </div>
+            <p>${recipe.desc}</p>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="detail-box">
+          <h4>필요한 재료</h4>
+          <div class="material-list">
+            ${recipe.ingredients.map(ingredient => {
+              const hasIt = matched.availableIngredients.includes(ingredient);
+              return `<div class="material-item ${hasIt ? "available" : ""}">${ingredient}</div>`;
+            }).join("")}
+          </div>
+        </div>
+
+        <div class="detail-box">
+          <h4>조리 순서</h4>
+          <div class="step-list">
+            ${recipe.steps.map((step, index) => `
+              <div class="step"><b>${index + 1}.</b>${step}</div>
+            `).join("")}
+          </div>
+        </div>
+
+        <div class="detail-box">
+          <h4>꿀팁</h4>
+          <div class="step-list">
+            ${recipe.tips.map(tip => `<div class="step">${tip}</div>`).join("")}
+          </div>
+        </div>
+
+        <div class="card-actions">
+          <button class="mini-btn ${favorites.includes(recipe.name) ? "filled" : ""}" onclick="toggleFavorite('${recipe.name}')">
+            ${favorites.includes(recipe.name) ? "저장됨" : "즐겨찾기"}
+          </button>
+          <button class="mini-btn" onclick="addMissingToShopping('${recipe.name}')">장보기 담기</button>
+          <button class="mini-btn" onclick="openDayModal('${recipe.name}')">식단표 담기</button>
+        </div>
+      </div>
+    `;
+
+    recipeModalOverlay.classList.add("active");
+  }
+
+  function closeRecipeDetailModal() {
+    recipeModalOverlay.classList.remove("active");
+  }
+
+  function toggleFavorite(recipeName) {
+    if (favorites.includes(recipeName)) {
+      favorites = favorites.filter(name => name !== recipeName);
+    } else {
+      favorites.push(recipeName);
+    }
+    renderFavorites();
+    renderRecipes();
+  }
+
+  function renderFavorites() {
+    favoriteCountStat.textContent = `${favorites.length}개`;
+    favoritesSummary.textContent = `저장된 메뉴 ${favorites.length}개`;
+
+    if (favorites.length === 0) {
+      favoriteListEl.innerHTML = `
+        <div class="no-results">
+          <div class="emoji">⭐</div>
+          <p>아직 저장된 메뉴가 없습니다.</p>
+        </div>
+      `;
+      return;
+    }
+
+    favoriteListEl.innerHTML = favorites.map(name => {
+      const recipe = recipes.find(r => r.name === name);
+      if (!recipe) return "";
+      return `
+        <div class="favorite-card">
+          <div class="favorite-card-info">
+            <strong>${recipe.emoji} ${recipe.name}</strong>
+            <span>${recipe.category} · ${recipe.time} · 난이도 ${recipe.difficulty}</span>
+          </div>
+          <div class="card-actions">
+            <button class="mini-btn" onclick="openRecipeModal('${recipe.name}')">상세보기</button>
+            <button class="mini-btn" onclick="openDayModal('${recipe.name}')">식단표 담기</button>
+            <button class="mini-btn filled" onclick="toggleFavorite('${recipe.name}')">삭제</button>
+          </div>
+        </div>
+      `;
+    }).join("");
+  }
+
+  function addMissingToShopping(recipeName) {
+    const recipe = getMatchedRecipes().find(r => r.name === recipeName) || recipes.find(r => r.name === recipeName);
+    if (!recipe) return;
+
+    const targetItems = selectedIngredients.length > 0 ? recipe.missingIngredients : recipe.ingredients;
+
+    targetItems.forEach(item => {
+      const exists = shoppingList.some(entry => normalize(entry.name) === normalize(item));
+      if (!exists) {
+        shoppingList.push({ name: item, checked: false });
+      }
+    });
+
+    renderShoppingList();
+  }
+
+  function toggleShoppingItem(index) {
+    if (!shoppingList[index]) return;
+    shoppingList[index].checked = !shoppingList[index].checked;
+    renderShoppingList();
+  }
+
+  function removeShoppingItem(index) {
+    shoppingList.splice(index, 1);
+    renderShoppingList();
+  }
+
+  function renderShoppingList() {
+    shoppingCountStat.textContent = `${shoppingList.length}개`;
+    shoppingSummary.textContent = `담긴 항목 ${shoppingList.length}개`;
+
+    if (shoppingList.length === 0) {
+      shoppingListEl.innerHTML = `
+        <div class="no-results">
+          <div class="emoji">🛒</div>
+          <p>장보기 항목이 없습니다.</p>
+        </div>
+      `;
+      return;
+    }
+
+    shoppingListEl.innerHTML = shoppingList.map((item, index) => `
+      <div class="shopping-card ${item.checked ? "done" : ""}">
+        <div class="shopping-left">
+          <button class="check" onclick="toggleShoppingItem(${index})">${item.checked ? "✓" : ""}</button>
+          <div class="shopping-card-info">
+            <strong>${item.name}</strong>
+            <span>${item.checked ? "구매 완료" : "구매 필요"}</span>
+          </div>
+        </div>
+        <button class="mini-btn" onclick="removeShoppingItem(${index})">삭제</button>
+      </div>
+    `).join("");
+  }
+
+  function openDayModal(recipeName) {
+    pendingPlannerRecipe = recipeName;
+    dayModalText.textContent = `${recipeName} 메뉴를 어떤 요일에 넣을까요?`;
+
+    dayGrid.innerHTML = weekdays.map(day => `
+      <button class="day-btn" onclick="assignRecipeToDay('${day}')">
+        ${day}${planner[day] ? ` · 현재 ${planner[day]}` : ""}
+      </button>
+    `).join("");
+
+    dayOverlay.classList.add("active");
+  }
+
+  function assignRecipeToDay(day) {
+    if (!pendingPlannerRecipe) return;
+    planner[day] = pendingPlannerRecipe;
+    renderPlanner();
+    dayOverlay.classList.remove("active");
+    switchTab("planner");
+    pendingPlannerRecipe = null;
+  }
+
+  function clearPlannerDay(day) {
+    planner[day] = null;
+    renderPlanner();
+  }
+
+  function renderPlanner() {
+    plannerGridEl.innerHTML = weekdays.map(day => `
+      <div class="planner-day">
+        <div class="planner-day-head">
+          <div class="planner-day-name">${day}</div>
+          ${planner[day] ? `<button class="tiny-btn" onclick="clearPlannerDay('${day}')">×</button>` : ""}
+        </div>
+        <div class="planner-slot ${planner[day] ? "filled" : ""}">
+          ${
+            planner[day]
+            ? `${recipes.find(r => r.name === planner[day])?.emoji || "🍽️"} ${planner[day]}`
+            : "아직 선택된 메뉴가 없습니다."
+          }
+        </div>
+      </div>
+    `).join("");
+  }
+
+  function getPickCandidates() {
+    const matched = getMatchedRecipes();
+    if (matched.length > 0) return matched.slice(0, 12);
+    return recipes.slice(0, 12);
+  }
+
+  function renderPickCard(target, recipe, className) {
+    if (!recipe) {
+      target.innerHTML = "";
+      target.className = `stack-card ${className}`;
+      return;
+    }
+
+    target.className = `stack-card ${className}`;
+    target.innerHTML = `
+      <div class="pick-card-top">${recipe.emoji || "🍽️"}</div>
+      <div class="pick-card-body">
+        <div class="pick-card-title">${recipe.name}</div>
+        <div class="pick-card-desc">${recipe.desc}</div>
+        <div class="meta-row">
+          <div class="meta-pill">${recipe.category}</div>
+          <div class="meta-pill">${recipe.time}</div>
+          <div class="meta-pill">난이도 ${recipe.difficulty}</div>
+        </div>
+      </div>
+    `;
+  }
+
+  function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  async function startMenuPick() {
+    const candidates = getPickCandidates();
+    if (!candidates.length) {
+      pickerResult.textContent = "후보가 없습니다";
+      return;
+    }
+
+    startPickBtn.disabled = true;
+    pickerResult.textContent = "메뉴를 고르는 중...";
+
+    const speeds = [90, 100, 110, 120, 135, 150, 170, 190, 220, 250, 290, 340];
+    let lastIndex = -1;
+
+    for (let i = 0; i < speeds.length; i++) {
+      let nextIndex = Math.floor(Math.random() * candidates.length);
+
+      while (nextIndex === lastIndex && candidates.length > 1) {
+        nextIndex = Math.floor(Math.random() * candidates.length);
+      }
+
+      lastIndex = nextIndex;
+
+      const active = candidates[nextIndex];
+      const back1 = candidates[(nextIndex + 1) % candidates.length];
+      const back2 = candidates[(nextIndex + 2) % candidates.length];
+
+      renderPickCard(stackActive, active, "active");
+      renderPickCard(stackBack1, back1, "back-1");
+      renderPickCard(stackBack2, back2, "back-2");
+
+      currentPickedRecipe = active;
+      await sleep(speeds[i]);
+    }
+
+    const winnerIndex = Math.floor(Math.random() * candidates.length);
+    const winner = candidates[winnerIndex];
+    const next1 = candidates[(winnerIndex + 1) % candidates.length];
+    const next2 = candidates[(winnerIndex + 2) % candidates.length];
+
+    renderPickCard(stackActive, winner, "active");
+    renderPickCard(stackBack1, next1, "back-1");
+    renderPickCard(stackBack2, next2, "back-2");
+
+    currentPickedRecipe = winner;
+    pickerResult.textContent = `오늘의 메뉴는 ${winner.emoji || "🍽️"} ${winner.name}`;
+    startPickBtn.disabled = false;
+  }
+
+  function openPicker() {
+    const candidates = getPickCandidates();
+    const active = candidates[0];
+    const back1 = candidates[1] || candidates[0];
+    const back2 = candidates[2] || candidates[0];
+
+    renderPickCard(stackActive, active, "active");
+    renderPickCard(stackBack1, back1, "back-1");
+    renderPickCard(stackBack2, back2, "back-2");
+
+    currentPickedRecipe = active || null;
+    pickerResult.textContent = "버튼을 눌러 오늘 메뉴를 정해보세요";
+    pickerOverlay.classList.add("active");
+  }
+
+  function closePicker() {
+    pickerOverlay.classList.remove("active");
+  }
+
+  function openPickedRecipeDetail() {
+    if (!currentPickedRecipe) return;
+    closePicker();
+    openRecipeModal(currentPickedRecipe.name);
+  }
+
+  function addPickedRecipeToPlanner() {
+    if (!currentPickedRecipe) return;
+    closePicker();
+    openDayModal(currentPickedRecipe.name);
+  }
+
+  document.querySelectorAll(".category-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".category-btn").forEach(item => item.classList.remove("active"));
+      btn.classList.add("active");
+      currentCategory = btn.dataset.category;
+      renderRecipes();
+    });
+  });
+
+  document.querySelectorAll(".tab-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      switchTab(btn.dataset.tab);
+    });
+  });
+
+  addIngredientBtn.addEventListener("click", () => addIngredient(ingredientInput.value));
+
+  ingredientInput.addEventListener("keydown", e => {
+    if (e.key === "Enter") {
+      addIngredient(ingredientInput.value);
+    }
+  });
+
+  document.getElementById("pickerBtn").addEventListener("click", openPicker);
+  document.getElementById("openPickerTop").addEventListener("click", openPicker);
+  document.getElementById("openPickerSide").addEventListener("click", openPicker);
+  document.getElementById("plannerPickerBtn").addEventListener("click", openPicker);
+
+  document.getElementById("goRecommendTop").addEventListener("click", () => switchTab("recommend"));
+  document.getElementById("moveFavoritesBtn").addEventListener("click", () => switchTab("favorites"));
+  document.getElementById("moveShoppingBtn").addEventListener("click", () => switchTab("shopping"));
+  document.getElementById("plannerRecommendBtn").addEventListener("click", () => switchTab("recommend"));
+
+  closeRecipeModal.addEventListener("click", closeRecipeDetailModal);
+  closePickerModal.addEventListener("click", closePicker);
+  closeDayModal.addEventListener("click", () => dayOverlay.classList.remove("active"));
+
+  recipeModalOverlay.addEventListener("click", e => {
+    if (e.target === recipeModalOverlay) closeRecipeDetailModal();
+  });
+
+  pickerOverlay.addEventListener("click", e => {
+    if (e.target === pickerOverlay) closePicker();
+  });
+
+  dayOverlay.addEventListener("click", e => {
+    if (e.target === dayOverlay) dayOverlay.classList.remove("active");
+  });
+
+  startPickBtn.addEventListener("click", startMenuPick);
+  pickDetailBtn.addEventListener("click", openPickedRecipeDetail);
+  pickPlannerBtn.addEventListener("click", addPickedRecipeToPlanner);
+
+  window.removeIngredient = removeIngredient;
+  window.openRecipeModal = openRecipeModal;
+  window.toggleFavorite = toggleFavorite;
+  window.addMissingToShopping = addMissingToShopping;
+  window.toggleShoppingItem = toggleShoppingItem;
+  window.removeShoppingItem = removeShoppingItem;
+  window.openDayModal = openDayModal;
+  window.assignRecipeToDay = assignRecipeToDay;
+  window.clearPlannerDay = clearPlannerDay;
+
+  renderSelectedIngredients();
+  renderRecipes();
+  renderFavorites();
+  renderShoppingList();
+  renderPlanner();
+</script>
+</body>
+</html>
